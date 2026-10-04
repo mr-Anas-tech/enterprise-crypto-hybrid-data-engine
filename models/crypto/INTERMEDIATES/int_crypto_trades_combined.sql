@@ -58,7 +58,8 @@ deduplicated_trades as (
     select
         *,
         row_number() over (
-            partition by crypto_name, event_timestamp, price_usd 
+            partition by crypto_name, price_usd,
+            date_trunc('second', event_timestamp)
             order by event_timestamp desc
         ) as row_num
     from unify_all_columns
